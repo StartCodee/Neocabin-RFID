@@ -22,7 +22,6 @@ const COOLDOWN_MS = Number(process.env.COOLDOWN_MS || 3000);
 
 const BACKEND_PRECHECK = String(process.env.BACKEND_PRECHECK || "0") === "1";
 const DEBUG_RAW = String(process.env.DEBUG_RAW || "0") === "1";
-const DEBUG_GATE = String(process.env.DEBUG_GATE || "0") === "1";
 const INVENTORY_POLL = String(process.env.INVENTORY_POLL || "1") === "1";
 const INVENTORY_INTERVAL_MS = Number(process.env.INVENTORY_INTERVAL_MS || 300);
 const RECONNECT_MS = Number(process.env.RECONNECT_MS || 1500);
@@ -75,11 +74,7 @@ function loadStateFromDisk() {
       lastState.set(epc, state);
     }
   } catch (e) {
-    if (DEBUG_GATE) {
-      console.warn(
-        `⚠️ [${ZONE}] gagal sync state dari disk: ${e && e.message ? e.message : e}`,
-      );
-    }
+    // DEBUG // console.warn(`⚠️ [${ZONE}] gagal sync state dari disk: ${e && e.message ? e.message : e}`);
   }
 }
 
@@ -248,9 +243,7 @@ async function handleTag(epc, rssiDbm, meta) {
   const rssiOk = Number.isFinite(rssiDbm) ? (c.maxRssi >= RSSI_MIN_DBM) : true;
 
   if (!enoughHits || !cooldownOk || !rssiOk) {
-    if (DEBUG_GATE) {
-      console.log(`⏭ [${ZONE}] skip epc=${epc} hits=${c.count}/${MIN_HITS} cooldown=${now - c.lastEmit}/${COOLDOWN_MS} rssi=${Number.isFinite(c.maxRssi) ? c.maxRssi.toFixed(1) : "n/a"} min=${RSSI_MIN_DBM}`);
-    }
+    // DEBUG // console.log(`⏭ [${ZONE}] skip epc=${epc} hits=${c.count}/${MIN_HITS} cooldown=${now - c.lastEmit}/${COOLDOWN_MS} rssi=${Number.isFinite(c.maxRssi) ? c.maxRssi.toFixed(1) : "n/a"} min=${RSSI_MIN_DBM}`);
     return;
   }
 
@@ -258,7 +251,7 @@ async function handleTag(epc, rssiDbm, meta) {
 
   const last = lastState.get(epc);
   if (last && last.zone === ZONE) {
-    if (DEBUG_GATE) console.log(`⏭ [${ZONE}] skip same-zone epc=${epc}`);
+    // DEBUG // console.log(`⏭ [${ZONE}] skip same-zone epc=${epc}`);
     c.lastEmit = now;
     return;
   }

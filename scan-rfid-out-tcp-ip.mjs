@@ -73,7 +73,7 @@ function loadStateFromDisk() {
       lastState.set(epc, state);
     }
   } catch {
-    // keep in-memory state as fallback
+    // DEBUG // console.warn(`⚠️ [${ZONE}] gagal sync state dari disk, pakai cache memory.`);
   }
 }
 
@@ -252,12 +252,16 @@ async function handleTag(epc, rssiDbm, meta) {
   const cooldownOk = now - c.lastEmit >= COOLDOWN_MS;
   const rssiOk = Number.isFinite(rssiDbm) ? c.maxRssi >= RSSI_MIN_DBM : true;
 
-  if (!enoughHits || !cooldownOk || !rssiOk) return;
+  if (!enoughHits || !cooldownOk || !rssiOk) {
+    // DEBUG // console.log(`⏭ [${ZONE}] skip epc=${epc} hits=${c.count}/${MIN_HITS} cooldown=${now - c.lastEmit}/${COOLDOWN_MS} rssi=${Number.isFinite(c.maxRssi) ? c.maxRssi.toFixed(1) : "n/a"} min=${RSSI_MIN_DBM}`);
+    return;
+  }
 
   if (SYNC_STATE_FROM_DISK) loadStateFromDisk();
 
   const last = lastState.get(epc);
   if (last && last.zone === ZONE) {
+    // DEBUG // console.log(`⏭ [${ZONE}] skip same-zone epc=${epc}`);
     c.lastEmit = now;
     return;
   }
