@@ -15,13 +15,13 @@ const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:3001";
 const BACKEND_AUTH = process.env.BACKEND_AUTH || "";
 const BACKEND_TIMEOUT_MS = Number(process.env.BACKEND_TIMEOUT_MS || 5000);
 
-const RSSI_MIN_DBM = Number(process.env.RSSI_MIN_DBM || -55);
+const RSSI_MIN_DBM = Number(process.env.RSSI_MIN_DBM || -90);
 const HIT_WINDOW_MS = Number(process.env.HIT_WINDOW_MS || 250);
 const MIN_HITS = Number(process.env.MIN_HITS || 2);
 const COOLDOWN_MS = Number(process.env.COOLDOWN_MS || 3000);
 
 const BACKEND_PRECHECK = String(process.env.BACKEND_PRECHECK || "0") === "1";
-const DEBUG_RAW = String(process.env.DEBUG_RAW || "0") === "1";
+const DEBUG_RAW = String(process.env.DEBUG_RAW || "1") === "1";
 const INVENTORY_POLL = String(process.env.INVENTORY_POLL || "1") === "1";
 const INVENTORY_INTERVAL_MS = Number(process.env.INVENTORY_INTERVAL_MS || 300);
 const RECONNECT_MS = Number(process.env.RECONNECT_MS || 1500);
@@ -128,6 +128,7 @@ async function backendGetPresence(epc) {
 }
 
 async function sendToServer(epc, zone, meta = {}) {
+  console.log('BLA');
   const url = `${BACKEND_URL.replace(/\/$/, "")}/api/documents/rfid/events`;
   const body = {
     epc,
@@ -243,7 +244,7 @@ async function handleTag(epc, rssiDbm, meta) {
   const rssiOk = Number.isFinite(rssiDbm) ? (c.maxRssi >= RSSI_MIN_DBM) : true;
 
   if (!enoughHits || !cooldownOk || !rssiOk) {
-    // DEBUG // console.log(`⏭ [${ZONE}] skip epc=${epc} hits=${c.count}/${MIN_HITS} cooldown=${now - c.lastEmit}/${COOLDOWN_MS} rssi=${Number.isFinite(c.maxRssi) ? c.maxRssi.toFixed(1) : "n/a"} min=${RSSI_MIN_DBM}`);
+    console.log(`⏭ [${ZONE}] skip epc=${epc} hits=${c.count}/${MIN_HITS} cooldown=${now - c.lastEmit}/${COOLDOWN_MS} rssi=${Number.isFinite(c.maxRssi) ? c.maxRssi.toFixed(1) : "n/a"} min=${RSSI_MIN_DBM}`);
     return;
   }
 

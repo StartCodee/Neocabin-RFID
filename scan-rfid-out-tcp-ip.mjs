@@ -253,7 +253,7 @@ async function handleTag(epc, rssiDbm, meta) {
   const rssiOk = Number.isFinite(rssiDbm) ? c.maxRssi >= RSSI_MIN_DBM : true;
 
   if (!enoughHits || !cooldownOk || !rssiOk) {
-    // DEBUG // console.log(`⏭ [${ZONE}] skip epc=${epc} hits=${c.count}/${MIN_HITS} cooldown=${now - c.lastEmit}/${COOLDOWN_MS} rssi=${Number.isFinite(c.maxRssi) ? c.maxRssi.toFixed(1) : "n/a"} min=${RSSI_MIN_DBM}`);
+    console.log(`⏭ [${ZONE}] skip epc=${epc} hits=${c.count}/${MIN_HITS} cooldown=${now - c.lastEmit}/${COOLDOWN_MS} rssi=${Number.isFinite(c.maxRssi) ? c.maxRssi.toFixed(1) : "n/a"} min=${RSSI_MIN_DBM}`);
     return;
   }
 
