@@ -1,3 +1,6 @@
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
+
 // rfid-in-tcp.mjs
 import net from "net";
 import fs from "fs";
