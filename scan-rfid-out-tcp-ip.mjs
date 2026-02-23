@@ -1,3 +1,4 @@
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 // rfid-out-tcp.mjs
 import net from "net";
 import fs from "fs";
@@ -10,7 +11,7 @@ const READER_HOST = process.env.RFID_READER_HOST || "192.168.179.200";
 const READER_PORT = Number(process.env.RFID_READER_PORT || 2022);
 
 const STATE_FILE = path.resolve(process.env.STATE_FILE || "./rfid_state.txt");
-const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:3001";
+const BACKEND_URL = process.env.BACKEND_URL || "https://bkad.kotabogor.go.id/api-arsip";
 const BACKEND_AUTH = process.env.BACKEND_AUTH || "";
 const BACKEND_TIMEOUT_MS = Number(process.env.BACKEND_TIMEOUT_MS || 5000);
 
