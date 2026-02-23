@@ -58,7 +58,7 @@ function normalizeEpc(rawHex) {
  * SERIAL CONFIG
  * =====================
  */
-const serialPath = process.env.SERIAL_PATH || "/dev/cu.usbserial-1110";
+const serialPath = process.env.SERIAL_PATH || "COM5";
 const serialBaud = Number(process.env.SERIAL_BAUD || 57600);
 
 const port = new SerialPort({

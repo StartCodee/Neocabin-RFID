@@ -22,13 +22,13 @@ const pusher = new Pusher({
 });
 
 // ==================== KONSTANTA LINGKUNGAN UMUM ====================
-const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:3001';
+const BACKEND_URL = process.env.BACKEND_URL || 'https://bkad.kotabogor.go.id/api-arsip';
 const BACKEND_AUTH = process.env.BACKEND_AUTH || '';
 const BACKEND_TIMEOUT_MS = Number(process.env.BACKEND_TIMEOUT_MS || 5000);
 const STATE_FILE = path.resolve(process.env.STATE_FILE || './rfid_state.txt');
 
 // Konfigurasi serial (REGISTER) - dari rfid-integrated.mjs
-const SERIAL_PATH = process.env.SERIAL_PATH || '/dev/cu.usbserial-1110';
+const SERIAL_PATH = process.env.SERIAL_PATH || 'COM4';
 const SERIAL_BAUD = Number(process.env.SERIAL_BAUD || 57600);
 const SERIAL_COOLDOWN = Number(process.env.SERIAL_COOLDOWN_MS || 3000);
 
@@ -246,6 +246,7 @@ async function sendToServer(zone, epc, meta = {}) {
     return true;
   } catch (e) {
     console.warn(`❌ [${zone}] fetch error: ${e.message}`);
+    console.error(e);
     return false;
   } finally {
     clearTimeout(timeout);
